@@ -23,6 +23,7 @@ public class ProductResource {
 			
 			JAXBContext jaxbContext1 = JAXBContext.newInstance(ProductsJSON.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext1.createUnmarshaller();
+			jaxbUnmarshaller.setProperty("eclipselink.media-type", "application/json");
 			StreamSource json = new StreamSource(new File("D:/School/3TI/Webtech 3/Product.json"));
 			
 			ProductsJSON productsJSON = (ProductsJSON)jaxbUnmarshaller.unmarshal(json);
@@ -55,9 +56,11 @@ public class ProductResource {
 			// get all products
 			JAXBContext jaxbContext1 = JAXBContext.newInstance(ProductsJSON.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext1.createUnmarshaller();
-			File XMLfile = new File("D:/School/3TI/Webtech 3/REST/Products.xml");
-			ProductsJSON productsXML = (ProductsJSON)jaxbUnmarshaller.unmarshal(XMLfile);
-			ArrayList<Product> listOfProducts = productsXML.getProducts();
+			jaxbUnmarshaller.setProperty("eclipselink.media-type", "application/json");
+			StreamSource json = new StreamSource(new File("D:/School/3TI/Webtech 3/Product.json"));
+			
+			ProductsJSON productsJSON = (ProductsJSON)jaxbUnmarshaller.unmarshal(json);
+			ArrayList<Product> listOfProducts = productsJSON.getProducts();
 			
 			// look for the product, using the shortname
 			for(Product product : listOfProducts) {
