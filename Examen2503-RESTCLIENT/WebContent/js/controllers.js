@@ -28,14 +28,14 @@ angular.module('ProductApp.controllers', []).
     controller('NewProductController', ['$scope', 'ProductService',
        function($scope, ProductService) {
     	$scope.addProduct = function (){
-    	var productXML = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
-    	productXML += '<product><brand>' + $scope.newProduct.brand + '</brand>';
-    	productXML += '<description>' + $scope.newProduct.description + '</description>';
-    	productXML += '<id>' + $scope.newProduct.id + '</id>';
-    	productXML += '<price>' + $scope.newProduct.price + '</price>';
-    	productXML += '<shortname>' + $scope.newProduct.name + '</shortname>';
+    	var jsonString =  "{\"products\" : [";
+    	jsonString += "{\"name\" : \"" + $scope.newProduct.name + "\",";
+    	jsonString += "\"description\" : \"" + $scope.newProduct.description + "\",";
+    	jsonString += "\"id\" : " + $scope.newProduct.id + ",";
+    	jsonString += "\"price\" : " + $scope.newProduct.price + "},";
+    	jsonString += "]}";
   
-    	ProductService.addProduct(productXML); 
+    	ProductService.addProduct(jsonString); 
     	};
     	}
     ]);

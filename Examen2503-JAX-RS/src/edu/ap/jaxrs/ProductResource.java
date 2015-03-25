@@ -5,6 +5,7 @@ import java.util.*;
 
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.*;
 import javax.xml.transform.stream.StreamSource;
 
@@ -16,17 +17,17 @@ public class ProductResource {
 	
 	
 	@GET
-	@Produces({"application/json"})
+	@Produces(MediaType.APPLICATION_JSON)
 	public String getProductsJSON() {
 		String jsonString = "{\"products\" : [";
 		try {
 			
 			JAXBContext jaxbContext1 = JAXBContext.newInstance(ProductsJSON.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext1.createUnmarshaller();
-			jaxbUnmarshaller.setProperty("eclipselink.media-type", "application/json");
+			
 			StreamSource json = new StreamSource(new File("D:/School/3TI/Webtech 3/Product.json"));
 			
-			ProductsJSON productsJSON = (ProductsJSON)jaxbUnmarshaller.unmarshal(json);
+			ProductsJSON productsJSON = jaxbUnmarshaller.unmarshal(json,ProductsJSON.class).getValue();
 			ArrayList<Product> listOfProducts = productsJSON.getProducts();
 			
 			for(Product product : listOfProducts) {
@@ -46,25 +47,26 @@ public class ProductResource {
 		return jsonString;
 	}
 	
+	//Voor 1 product
 
 	@GET
-	@Path("/{shortname}")
-	@Produces({"application/json"})
-	public String getProductJSON(@PathParam("shortname") String shortname) {
+	@Path("/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getProductJSON(@PathParam("name") String name) {
 		String jsonString = "";
 		try {
 			// get all products
 			JAXBContext jaxbContext1 = JAXBContext.newInstance(ProductsJSON.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext1.createUnmarshaller();
-			jaxbUnmarshaller.setProperty("eclipselink.media-type", "application/json");
+			
 			StreamSource json = new StreamSource(new File("D:/School/3TI/Webtech 3/Product.json"));
 			
-			ProductsJSON productsJSON = (ProductsJSON)jaxbUnmarshaller.unmarshal(json);
+			ProductsJSON productsJSON = jaxbUnmarshaller.unmarshal(json,ProductsJSON.class).getValue();
 			ArrayList<Product> listOfProducts = productsJSON.getProducts();
 			
 			// look for the product, using the shortname
 			for(Product product : listOfProducts) {
-				if(shortname.equalsIgnoreCase(product.getName())) {
+				if(name.equalsIgnoreCase(product.getName())) {
 					jsonString += "{\"name\" : \"" + product.getName() + "\",";
 					jsonString += "\"id\" : " + product.getId() + ",";
 					

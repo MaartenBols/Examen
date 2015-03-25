@@ -32,14 +32,14 @@ angular.module('ProductApp.services', []).
             	});
             },
             
-            addProduct: function(productXML){
+            addProduct: function(jsonString){
             	
             	$http({
             		method: 'POST',
             		url: restUrl,
-            		data: productXML,
+            		data: jsonString,
             		headers: {
-            			'Content-Type': 'text/xml'
+            			'Content-Type': 'application/json'
             		}}).then(function(result) {
             			alert('success');
             		}, function(error){
